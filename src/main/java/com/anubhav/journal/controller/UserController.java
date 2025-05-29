@@ -33,15 +33,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.add(user));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getJornalById(@PathVariable ObjectId id) {
-        return userService.findById(id)
-                //.map(entry -> ResponseEntity.ok(entry))
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/username/{username}")
+    @GetMapping("/{username}")
     public ResponseEntity<User> getJornalById(@PathVariable String username) {
         User user = userService.findByUserName(username);
         if (user != null)

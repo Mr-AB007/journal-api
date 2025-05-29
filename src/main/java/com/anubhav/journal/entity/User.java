@@ -17,6 +17,15 @@ public class User {
     private String userName;
     private String password;
     private String email;
+
+    public List<JournalEntry> getJournalEntries() {
+        return journalEntries;
+    }
+
+    public void setJournalEntries(List<JournalEntry> journalEntries) {
+        this.journalEntries = journalEntries;
+    }
+
     @DBRef
     private List<JournalEntry> journalEntries = new ArrayList<>();
 
