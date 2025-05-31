@@ -1,5 +1,6 @@
 package com.anubhav.journal.entity;
 
+import com.mongodb.lang.NonNull;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -14,7 +15,9 @@ public class User {
     @Id
     private ObjectId id;
     @Indexed(unique = true)
+    @NonNull
     private String userName;
+    @NonNull
     private String password;
     private String email;
 
