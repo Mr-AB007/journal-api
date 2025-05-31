@@ -61,7 +61,7 @@ public class JournalController {
 
     }
 
-    @PutMapping("id/{id}/{username}")
+    @PutMapping("/user/{username}/id/{id}")
     public ResponseEntity<JournalEntry> updateJornalById(@RequestBody JournalEntry entry, @PathVariable ObjectId id, @PathVariable String username) {
         Optional<JournalEntry> old = journalEntryService.findById(id);
         if (old.isPresent()) {
