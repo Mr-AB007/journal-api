@@ -6,6 +6,7 @@ import com.anubhav.journal.repository.JournalEntryRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,9 +25,10 @@ public class JournalEntryService {
 
     public List<JournalEntry> getAllByUser(String username) {
         User user = userService.findByUserName(username);
-        return user.getJournalEntries() ;
+        return user.getJournalEntries();
     }
 
+    @Transactional
     public JournalEntry add(JournalEntry entry, String username) {
         User user = userService.findByUserName(username);
         entry.setDate(LocalDateTime.now());
@@ -40,6 +42,7 @@ public class JournalEntryService {
         return journalEntryRepository.findById(id);
     }
 
+    @Transactional
     public void deleteByUserAndId(String username, ObjectId id) {
         User user = userService.findByUserName(username);
         user.getJournalEntries().removeIf(x -> x.getId().equals(id.toString()));
