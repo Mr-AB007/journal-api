@@ -39,9 +39,13 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public User update(User user){
+    public void deleteByUser(String username) {
+        userRepository.deleteByUserName(username);
+    }
+
+    public User update(User user) {
         User oldUser = userRepository.findByUserName(user.getUserName());
-        if(oldUser != null){
+        if (oldUser != null) {
             oldUser.setUserName(user.getUserName());
             oldUser.setPassword(user.getPassword());
             userRepository.save(oldUser);

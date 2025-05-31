@@ -52,6 +52,15 @@ public class UserController {
 //        }
 //
 //    }
+    @DeleteMapping("/{username}")
+    public ResponseEntity<Void> deleteByUser(@PathVariable String username){
+        User user = userService.findByUserName(username);
+        if(user != null){
+            userService.deleteByUser(username);
+            return ResponseEntity.noContent().build();
+        }
+            return ResponseEntity.notFound().build();
+    }
 
     @PutMapping
     public ResponseEntity<User> updateUser(@RequestBody User user) {
