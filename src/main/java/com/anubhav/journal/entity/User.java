@@ -21,6 +21,19 @@ public class User {
     private String password;
     private String email;
 
+    @DBRef
+    private List<JournalEntry> journalEntries = new ArrayList<>();
+
+    private List<String> roles;
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
     public List<JournalEntry> getJournalEntries() {
         return journalEntries;
     }
@@ -29,8 +42,6 @@ public class User {
         this.journalEntries = journalEntries;
     }
 
-    @DBRef
-    private List<JournalEntry> journalEntries = new ArrayList<>();
 
     public ObjectId getId() {
         return id;
