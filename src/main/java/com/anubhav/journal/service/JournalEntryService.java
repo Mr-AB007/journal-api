@@ -29,12 +29,12 @@ public class JournalEntryService {
     }
 
     @Transactional
-    public JournalEntry add(JournalEntry entry, String username) {
+    public JournalEntry addEntryByUser(JournalEntry entry, String username) {
         User user = userService.findByUserName(username);
         entry.setDate(LocalDateTime.now());
         JournalEntry journalEntry = journalEntryRepository.save(entry);
         user.getJournalEntries().add(journalEntry);
-        userService.add(user);
+        userService.add_updated_entry(user);
         return journalEntry;
     }
 
