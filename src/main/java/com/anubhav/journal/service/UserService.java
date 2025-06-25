@@ -30,7 +30,7 @@ public class UserService {
         user.setRoles(Arrays.asList("USER"));
         return userRepository.save(user);
     }
-    public void add_updated_entry(User user) {
+    public void addEntryByUser(User user) {
         userRepository.save(user);
     }
 

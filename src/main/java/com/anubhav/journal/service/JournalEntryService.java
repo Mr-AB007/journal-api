@@ -34,7 +34,7 @@ public class JournalEntryService {
         entry.setDate(LocalDateTime.now());
         JournalEntry journalEntry = journalEntryRepository.save(entry);
         user.getJournalEntries().add(journalEntry);
-        userService.add_updated_entry(user);
+        userService.addEntryByUser(user);
         return journalEntry;
     }
 
