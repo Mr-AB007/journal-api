@@ -24,13 +24,13 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User add(User user) {
+    public User addNewUser(User user) {
         String encryptPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptPassword);
         user.setRoles(Arrays.asList("USER"));
         return userRepository.save(user);
     }
-    public void addEntryByUser(User user) {
+    public void saveUser(User user) {
         userRepository.save(user);
     }
 

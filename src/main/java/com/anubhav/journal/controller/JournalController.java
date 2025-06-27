@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/journal")
@@ -39,16 +38,6 @@ public class JournalController {
     }
 
 
-//    @GetMapping
-//    public ResponseEntity<List<JournalEntry>> getJouranlByUser() {
-//        Authentication authenticatedUser = SecurityContextHolder.getContext().getAuthentication();
-//        String userName = authenticatedUser.getName();
-//        List<JournalEntry> journalEntries = journalEntryService.getAllByUser(userName);
-//        if (journalEntries != null && !journalEntries.isEmpty()) return ResponseEntity.ok().body(journalEntries);
-//        return ResponseEntity.notFound().build();
-//    }
-
-
     @PostMapping
     public ResponseEntity<JournalEntry> addJournalByUser(@RequestBody JournalEntry journal) {
         try {
@@ -64,29 +53,37 @@ public class JournalController {
 
 
     @GetMapping("id/{id}")
-    public ResponseEntity<JournalEntry> getJornalById(@PathVariable ObjectId id) {
-        return journalEntryService.findById(id)
-                //.map(entry -> ResponseEntity.ok(entry))
-                .map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping("/{username}/{id}")
-    public ResponseEntity<Void> deleteJornalByUserAndId(@PathVariable ObjectId id, @PathVariable String username) {
-        Optional<JournalEntry> entry = journalEntryService.findById(id);
-        if (entry.isPresent()) {
-            journalEntryService.deleteByUserAndId(username, id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> getJornalById(@PathVariable ObjectId id) {
+        Authentication authenticatedUser = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authenticatedUser.getName();
+        User user = userService.findByUserName(userName);
+        List<JournalEntry> journalEntries = user.getJournalEntries().stream().filter(x -> x.getId().equals(id)).toList();
+        if(!journalEntries.isEmpty()){
+            return ResponseEntity.ok().body(journalEntries);
         }
+        else
+            return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("id/{id}")
+    public ResponseEntity<Void> deleteJornalByUserAndId(@PathVariable ObjectId id) {
+        Authentication authenticatedUser = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authenticatedUser.getName();
+        boolean removed = journalEntryService.deleteByUserAndId(userName,id);
+        if(removed)
+            return ResponseEntity.noContent().build();
+        else
+            return ResponseEntity.notFound().build();
 
     }
 
-    @PutMapping("/user/{username}/id/{id}")
-    public ResponseEntity<JournalEntry> updateJornalById(@RequestBody JournalEntry entry, @PathVariable ObjectId id, @PathVariable String username) {
-        Optional<JournalEntry> old = journalEntryService.findById(id);
-        if (old.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(journalEntryService.update(entry, id));
+    @PutMapping("/id/{id}")
+    public ResponseEntity<JournalEntry> updateJornalById(@RequestBody JournalEntry entry, @PathVariable ObjectId id) {
+        Authentication authUser = SecurityContextHolder.getContext().getAuthentication();
+        String user = authUser.getName();
+        JournalEntry updated = journalEntryService.update(entry, id);
+        if (updated != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(updated);
         } else {
             return ResponseEntity.notFound().build();
         }

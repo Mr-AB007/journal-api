@@ -19,7 +19,7 @@ public class PublicController {
 
     @PostMapping("/create-user")
     public ResponseEntity<User> addJournal(@RequestBody User user) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.add(user));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.addNewUser(user));
     }
 
 }
