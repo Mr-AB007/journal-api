@@ -27,7 +27,7 @@ public class UserService {
     public User addNewUser(User user) {
         String encryptPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptPassword);
-        user.setRoles(Arrays.asList("USER"));
+        user.setRoles(List.of("USER"));
         return userRepository.save(user);
     }
     public void saveUser(User user) {
@@ -55,5 +55,12 @@ public class UserService {
     }
     public Optional<User> findById(ObjectId id) {
         return userRepository.findById(id);
+    }
+
+    public User saveAdmin(User user) {
+        String encryptPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptPassword);
+        user.setRoles(List.of("USER","ADMIN"));
+        return userRepository.save(user);
     }
 }
