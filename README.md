@@ -44,6 +44,10 @@ This documentation provides setup, configuration, and usage instructions.
 ## Setup & Installation
 
 ### 1. Clone the Repository
-'''bash
+```bash
 git clone https://github.com/Mr-AB007/journal-api.git
 cd journal-api
+
+
+
+
