@@ -27,6 +27,7 @@ public class HuggingFaceClient {
     public SentimentResult[] sentiment(String text) {
         try {
             String url = HF_API + hfModel;
+
             HttpHeaders headers = new HttpHeaders();
             headers.setBearerAuth(hfToken);
             headers.setContentType(MediaType.APPLICATION_JSON);
